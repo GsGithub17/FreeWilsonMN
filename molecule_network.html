@@ -1,0 +1,265 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1000;
+                 height: 600px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 1000;
+                 height: 600px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+            <div id="config"></div>
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#3e4a89", "id": 0, "label": "CHEMBL321806", "shape": "dot", "title": "SMILES: Cc1ccc(C2CC3CCC(C2C(=O)OC(C)C)N3C)cc1\u003cbr\u003epIC50: 5.99"}, {"color": "#414287", "id": 1, "label": "CHEMBL340912", "shape": "dot", "title": "SMILES: Cc1ccc(C2CC3CCC(C2C(=O)Oc2ccccc2)N3C)cc1\u003cbr\u003epIC50: 5.81"}, {"color": "#26818e", "id": 2, "label": "CHEMBL340761", "shape": "dot", "title": "SMILES: CN1C2CCC1C(C(=O)Oc1ccccc1)C(c1ccc(I)cc1)C2\u003cbr\u003epIC50: 7.29"}, {"color": "#1f998a", "id": 3, "label": "CHEMBL127546", "shape": "dot", "title": "SMILES: CC(C)OC(=O)C1C(c2ccc(I)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 7.9"}, {"color": "#23a983", "id": 4, "label": "CHEMBL97887", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(Br)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 8.31"}, {"color": "#2c718e", "id": 5, "label": "CHEMBL127040", "shape": "dot", "title": "SMILES: CC(C)OC(=O)C1C(c2ccc(Cl)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 6.89"}, {"color": "#1fa287", "id": 6, "label": "CHEMBL80515", "shape": "dot", "title": "SMILES: COC(=O)C1C2CCC(CC1c1ccc(F)cc1)N2\u003cbr\u003epIC50: 8.14"}, {"color": "#1e9d89", "id": 7, "label": "CHEMBL67387", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2cccc(I)c2)CC2CCC1N2C\u003cbr\u003epIC50: 8.01"}, {"color": "#39568c", "id": 8, "label": "CHEMBL317904", "shape": "dot", "title": "SMILES: CCc1cc(C2C(c3ccc(C)cc3)CC3CCC2N3C)on1\u003cbr\u003epIC50: 6.24"}, {"color": "#472e7c", "id": 9, "label": "CHEMBL322400", "shape": "dot", "title": "SMILES: Cc1ccc(C2CC3CCC(C2c2cc(C(C)C)no2)N3C)cc1\u003cbr\u003epIC50: 5.41"}, {"color": "#34608d", "id": 10, "label": "CHEMBL103228", "shape": "dot", "title": "SMILES: Cc1ccc(C2CC3CCC(C2c2cc(C)no2)N3C)cc1\u003cbr\u003epIC50: 6.46"}, {"color": "#30698e", "id": 11, "label": "CHEMBL321780", "shape": "dot", "title": "SMILES: CC(C)c1cc(C2C(c3ccc(Cl)cc3)CC3CCC2N3C)on1\u003cbr\u003epIC50: 6.68"}, {"color": "#24868e", "id": 12, "label": "CHEMBL317905", "shape": "dot", "title": "SMILES: Cc1ccc(C2CC3CCC(C2c2ccno2)N3C)cc1\u003cbr\u003epIC50: 7.42"}, {"color": "#1fa088", "id": 13, "label": "CHEMBL103523", "shape": "dot", "title": "SMILES: CN1C2CCC1C(c1ccno1)C(c1ccc(Cl)cc1)C2\u003cbr\u003epIC50: 8.09"}, {"color": "#26818e", "id": 14, "label": "CHEMBL316528", "shape": "dot", "title": "SMILES: Cc1cc(C2C(c3ccc(Cl)cc3)CC3CCC2N3C)on1\u003cbr\u003epIC50: 7.28"}, {"color": "#32648e", "id": 15, "label": "CHEMBL103227", "shape": "dot", "title": "SMILES: CCc1cc(C2C(c3ccc(Cl)cc3)CC3CCC2N3C)on1\u003cbr\u003epIC50: 6.55"}, {"color": "#46327e", "id": 16, "label": "CHEMBL100652", "shape": "dot", "title": "SMILES: CN1C2CCC1C(c1cc(C(C)(C)C)no1)C(c1ccc(Cl)cc1)C2\u003cbr\u003epIC50: 5.47"}, {"color": "#355f8d", "id": 17, "label": "CHEMBL105089", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(C)cc2)CC2CCC1N2CCF\u003cbr\u003epIC50: 6.43"}, {"color": "#2eb37c", "id": 18, "label": "CHEMBL318961", "shape": "dot", "title": "SMILES: CN1C2CCC1C(C(=O)OCCF)C(c1ccc(I)cc1)C2\u003cbr\u003epIC50: 8.59"}, {"color": "#1f988b", "id": 19, "label": "CHEMBL317444", "shape": "dot", "title": "SMILES: O=C(OCCF)C1C(c2ccc(I)cc2)CC2CCC1N2CCCF\u003cbr\u003epIC50: 7.88"}, {"color": "#34618d", "id": 20, "label": "CHEMBL430504", "shape": "dot", "title": "SMILES: Cc1ccc(C2CC3CCC(C2C(=O)OCCCF)N3C)cc1\u003cbr\u003epIC50: 6.49"}, {"color": "#3aba76", "id": 21, "label": "CHEMBL105693", "shape": "dot", "title": "SMILES: CN1C2CCC1C(C(=O)OCCCF)C(c1ccc(I)cc1)C2\u003cbr\u003epIC50: 8.78"}, {"color": "#24878e", "id": 22, "label": "CHEMBL433159", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(Br)cc2)CC2CCC1N2CCCF\u003cbr\u003epIC50: 7.44"}, {"color": "#c5e021", "id": 23, "label": "CHEMBL14613", "shape": "dot", "title": "SMILES: COC(=O)C1C2CCC(CC1c1ccc(I)cc1)N2\u003cbr\u003epIC50: 10.215"}, {"color": "#404688", "id": 24, "label": "CHEMBL319052", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(C)cc2)CC2CCC1N2CCCF\u003cbr\u003epIC50: 5.88"}, {"color": "#38598c", "id": 25, "label": "CHEMBL2113648", "shape": "dot", "title": "SMILES: COC(=O)[C@@H]1C2CCC(C[C@@H]1c1ccc(C)cc1)N2C/C=C/I\u003cbr\u003epIC50: 6.3"}, {"color": "#75d054", "id": 26, "label": "CHEMBL85492", "shape": "dot", "title": "SMILES: C=Cc1ccc(C2CC3CCC(N3)C2C(=O)CC)cc1\u003cbr\u003epIC50: 9.49"}, {"color": "#24878e", "id": 27, "label": "CHEMBL278122", "shape": "dot", "title": "SMILES: CCC(=O)C1C(c2ccc(C(C)C)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 7.443"}, {"color": "#a8db34", "id": 28, "label": "CHEMBL85877", "shape": "dot", "title": "SMILES: C=C(C)c1ccc(C2CC3CCC(N3)C2C(=O)CC)cc1\u003cbr\u003epIC50: 9.96"}, {"color": "#20928c", "id": 29, "label": "CHEMBL87983", "shape": "dot", "title": "SMILES: CCC(=O)C1C2CCC(CC1c1ccc(C)cc1)N2\u003cbr\u003epIC50: 7.72"}, {"color": "#38588c", "id": 30, "label": "CHEMBL314919", "shape": "dot", "title": "SMILES: CCC(=O)C1C(c2ccc(C(CC)CC)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 6.27"}, {"color": "#52c569", "id": 31, "label": "CHEMBL82807", "shape": "dot", "title": "SMILES: C=C(C)c1ccc(C2CC3CCC(C2C(=O)CC)N3C)cc1\u003cbr\u003epIC50: 9.09"}, {"color": "#29af7f", "id": 32, "label": "CHEMBL314361", "shape": "dot", "title": "SMILES: C=Cc1ccc(C2CC3CCC(C2C(=O)CC)N3C)cc1\u003cbr\u003epIC50: 8.49"}, {"color": "#2e6f8e", "id": 33, "label": "CHEMBL87678", "shape": "dot", "title": "SMILES: CCC(=O)C1C2CCC(CC1c1ccc(C(CC)CC)cc1)N2\u003cbr\u003epIC50: 6.82"}, {"color": "#2a768e", "id": 34, "label": "CHEMBL87739", "shape": "dot", "title": "SMILES: CCC(=O)C1C(c2ccc(C3CCCCC3)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 7.01"}, {"color": "#22a785", "id": 35, "label": "CHEMBL85256", "shape": "dot", "title": "SMILES: CCC(=O)C1C2CCC(CC1c1ccc(C(C)C)cc1)N2\u003cbr\u003epIC50: 8.28"}, {"color": "#46327e", "id": 36, "label": "CHEMBL338411", "shape": "dot", "title": "SMILES: O[C@H]1CCCC[C@@H]1N1C2CCC1CC(c1ccccc1)C2\u003cbr\u003epIC50: 5.47"}, {"color": "#440154", "id": 37, "label": "CHEMBL317909", "shape": "dot", "title": "SMILES: Cc1ccc(C2CC3CCC(C2c2cc(C(C)(C)C)no2)N3C)cc1\u003cbr\u003epIC50: 4.59"}, {"color": "#25848e", "id": 38, "label": "CHEMBL303494", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2cccc(-c3ccco3)c2)CC2CCC1N2C\u003cbr\u003epIC50: 7.38"}, {"color": "#40bd72", "id": 39, "label": "CHEMBL66068", "shape": "dot", "title": "SMILES: COC(=O)C1C2CCC(CC1c1cccc(I)c1)N2\u003cbr\u003epIC50: 8.87"}, {"color": "#24878e", "id": 40, "label": "CHEMBL294733", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2cccc(-c3ccccc3)c2)CC2CCC1N2C\u003cbr\u003epIC50: 7.45"}, {"color": "#29798e", "id": 41, "label": "CHEMBL303232", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2cccc(-c3ccsc3)c2)CC2CCC1N2C\u003cbr\u003epIC50: 7.08"}, {"color": "#2c728e", "id": 42, "label": "CHEMBL23141", "shape": "dot", "title": "SMILES: CC(=O)C1C(c2ccc(C)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 6.91"}, {"color": "#3c4f8a", "id": 43, "label": "CHEMBL22665", "shape": "dot", "title": "SMILES: CC(=O)C1C(c2ccc(F)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 6.07"}, {"color": "#25ab82", "id": 44, "label": "CHEMBL22518", "shape": "dot", "title": "SMILES: CCC(=O)C1C(c2ccc(-c3ccccc3)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 8.37"}, {"color": "#3e4c8a", "id": 45, "label": "CHEMBL23875", "shape": "dot", "title": "SMILES: CCC(=O)C1C(c2ccccc2)CC2CCC1N2C\u003cbr\u003epIC50: 6.0"}, {"color": "#424086", "id": 46, "label": "CHEMBL22377", "shape": "dot", "title": "SMILES: CCC(=O)C1C(c2ccc(C(C)(C)C)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 5.75"}, {"color": "#404688", "id": 47, "label": "CHEMBL416007", "shape": "dot", "title": "SMILES: CC(=O)C1C(c2ccccc2)CC2CCC1N2C\u003cbr\u003epIC50: 5.87"}, {"color": "#297a8e", "id": 48, "label": "CHEMBL23974", "shape": "dot", "title": "SMILES: CCc1ccc(C2CC3CCC(C2C(C)=O)N3C)cc1\u003cbr\u003epIC50: 7.11"}, {"color": "#3a548c", "id": 49, "label": "CHEMBL23655", "shape": "dot", "title": "SMILES: CCC(=O)C1C(c2ccc(F)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 6.2"}, {"color": "#9bd93c", "id": 50, "label": "CHEMBL358006", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(I)cc2)CC2CCC1N2CCF\u003cbr\u003epIC50: 9.85"}, {"color": "#1f9f88", "id": 51, "label": "CHEMBL153200", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(I)cc2)CC2CCC1N2CCCI\u003cbr\u003epIC50: 8.05"}, {"color": "#42be71", "id": 52, "label": "CHEMBL150084", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(I)cc2)CC2CCC1N2CC1CC1\u003cbr\u003epIC50: 8.89"}, {"color": "#1f9e89", "id": 53, "label": "CHEMBL356166", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(I)cc2)CC2CCC1N2CC(F)F\u003cbr\u003epIC50: 8.02"}, {"color": "#2fb47c", "id": 54, "label": "CHEMBL357300", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(I)cc2)CC2CCC1N2CCCO\u003cbr\u003epIC50: 8.6"}, {"color": "#75d054", "id": 55, "label": "CHEMBL345553", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(I)cc2)CC2CCC1N2CCCCl\u003cbr\u003epIC50: 9.49"}, {"color": "#21908d", "id": 56, "label": "CHEMBL346872", "shape": "dot", "title": "SMILES: CC(C)OC(=O)C1C(c2ccc(I)cc2)CC2CCC1N2CCF\u003cbr\u003epIC50: 7.66"}, {"color": "#3aba76", "id": 57, "label": "CHEMBL153361", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(I)cc2)CC2CCC1N2CC(OC)OC\u003cbr\u003epIC50: 8.77"}, {"color": "#52c569", "id": 58, "label": "CHEMBL149801", "shape": "dot", "title": "SMILES: COC(=O)CN1C2CCC1C(C(=O)OC)C(c1ccc(I)cc1)C2\u003cbr\u003epIC50: 9.09"}, {"color": "#26828e", "id": 59, "label": "CHEMBL345760", "shape": "dot", "title": "SMILES: CC(C)OC(=O)C1C(c2ccc(I)cc2)CC2CCC1N2CCCF\u003cbr\u003epIC50: 7.31"}, {"color": "#20a486", "id": 60, "label": "CHEMBL2112890", "shape": "dot", "title": "SMILES: COC(=O)[C@@H]1C2CCC(C[C@@H]1c1ccc(I)cc1)N2CC(=O)N(C)C\u003cbr\u003epIC50: 8.19"}, {"color": "#73d056", "id": 61, "label": "CHEMBL356652", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(I)cc2)CC2CCC1N2CCCBr\u003cbr\u003epIC50: 9.46"}, {"color": "#2d718e", "id": 62, "label": "CHEMBL2112915", "shape": "dot", "title": "SMILES: C[C@H](CF)OC(=O)C1C(c2ccc(Cl)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 6.88"}, {"color": "#2d718e", "id": 63, "label": "CHEMBL2112916", "shape": "dot", "title": "SMILES: C[C@@H](CF)OC(=O)C1C(c2ccc(Cl)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 6.86"}, {"color": "#25848e", "id": 64, "label": "CHEMBL325330", "shape": "dot", "title": "SMILES: Fc1ccc(C2C3CCC(C[C@H]2c2ccc(F)cc2)N3)cc1\u003cbr\u003epIC50: 7.39"}, {"color": "#1f948c", "id": 65, "label": "CHEMBL171565", "shape": "dot", "title": "SMILES: CCC(=O)C1C2CCC(CC1c1cccc(I)c1)N2\u003cbr\u003epIC50: 7.8"}, {"color": "#5cc863", "id": 66, "label": "CHEMBL352913", "shape": "dot", "title": "SMILES: CCC(=O)C1C2CCC(CC1c1ccc(/C=C/I)cc1)N2\u003cbr\u003epIC50: 9.21"}, {"color": "#26818e", "id": 67, "label": "CHEMBL169320", "shape": "dot", "title": "SMILES: Cc1ccc(C2CC3CCC(C2C(=O)CC/C=C/I)N3C)cc1\u003cbr\u003epIC50: 7.29"}, {"color": "#20928c", "id": 68, "label": "CHEMBL168305", "shape": "dot", "title": "SMILES: CCC(=O)C1C(c2cccc(I)c2)CC2CCC1N2C\u003cbr\u003epIC50: 7.71"}, {"color": "#48c16e", "id": 69, "label": "CHEMBL169117", "shape": "dot", "title": "SMILES: CCC(=O)C1C2CCC(CC1c1ccc(I)c(Cl)c1)N2\u003cbr\u003epIC50: 8.97"}, {"color": "#5ec962", "id": 70, "label": "CHEMBL423275", "shape": "dot", "title": "SMILES: CCC(=O)C1C2CCC(CC1c1ccc(/C=C(\\C)I)cc1)N2\u003cbr\u003epIC50: 9.24"}, {"color": "#37b878", "id": 71, "label": "CHEMBL352698", "shape": "dot", "title": "SMILES: CCC(=O)C1C(c2ccc(I)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 8.73"}, {"color": "#1fa287", "id": 72, "label": "CHEMBL355734", "shape": "dot", "title": "SMILES: CCC(=O)C1C2CCC(CC1c1ccc(I)c(F)c1)N2\u003cbr\u003epIC50: 8.14"}, {"color": "#a0da39", "id": 73, "label": "CHEMBL355259", "shape": "dot", "title": "SMILES: CCC(=O)C1C2CCC(CC1c1ccc(/C=C(/C)I)cc1)N2\u003cbr\u003epIC50: 9.89"}, {"color": "#2fb47c", "id": 74, "label": "CHEMBL354725", "shape": "dot", "title": "SMILES: CCC(=O)C1C2CCC(CC1c1ccc(I)cc1)N2\u003cbr\u003epIC50: 8.61"}, {"color": "#25ac82", "id": 75, "label": "CHEMBL433560", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(-c3cscc3Br)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 8.4"}, {"color": "#24aa83", "id": 76, "label": "CHEMBL178773", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(-c3ccc(I)s3)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 8.34"}, {"color": "#287d8e", "id": 77, "label": "CHEMBL181613", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(-c3ccc(N)s3)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 7.19"}, {"color": "#fde725", "id": 78, "label": "CHEMBL435287", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(-c3ccsc3)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 10.77"}, {"color": "#a8db34", "id": 79, "label": "CHEMBL181557", "shape": "dot", "title": "SMILES: COC(=O)C1C2CCC(CC1c1ccc(-c3cccs3)cc1)N2\u003cbr\u003epIC50: 9.96"}, {"color": "#98d83e", "id": 80, "label": "CHEMBL181609", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(-c3cccs3)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 9.82"}, {"color": "#86d549", "id": 81, "label": "CHEMBL179498", "shape": "dot", "title": "SMILES: COC(=O)C1C2CCC(CC1c1ccc(-c3ccsc3)cc1)N2\u003cbr\u003epIC50: 9.64"}, {"color": "#70cf57", "id": 82, "label": "CHEMBL180918", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(-c3ccc(Br)s3)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 9.42"}, {"color": "#5ac864", "id": 83, "label": "CHEMBL369098", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(-c3ccc(Cl)s3)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 9.19"}, {"color": "#218e8d", "id": 84, "label": "CHEMBL365738", "shape": "dot", "title": "SMILES: COC(=O)C1C2CCC(CC1c1ccc(C)c(F)c1)N2\u003cbr\u003epIC50: 7.62"}, {"color": "#20938c", "id": 85, "label": "CHEMBL195738", "shape": "dot", "title": "SMILES: COC(=O)C1C2CCC(CC1c1ccc(F)c(C)c1)N2\u003cbr\u003epIC50: 7.77"}, {"color": "#228c8d", "id": 86, "label": "CHEMBL192924", "shape": "dot", "title": "SMILES: COC(=O)C1C2CCC(CC1c1cccc(F)c1)N2\u003cbr\u003epIC50: 7.57"}, {"color": "#27808e", "id": 87, "label": "CHEMBL366159", "shape": "dot", "title": "SMILES: COC(=O)C1C2CCC(CC1c1ccc(F)c(F)c1)N2\u003cbr\u003epIC50: 7.26"}, {"color": "#1f978b", "id": 88, "label": "CHEMBL371607", "shape": "dot", "title": "SMILES: COC(=O)C1C2CCC(CC1c1cc(F)cc(F)c1)N2\u003cbr\u003epIC50: 7.86"}, {"color": "#2cb17e", "id": 89, "label": "CHEMBL365649", "shape": "dot", "title": "SMILES: CN1C2CCC1C(C(=O)OCCCF)C(c1ccc(Br)cc1)C2\u003cbr\u003epIC50: 8.54"}, {"color": "#7ad151", "id": 90, "label": "CHEMBL184807", "shape": "dot", "title": "SMILES: O=C(OCCCF)C1C2CCC(CC1c1ccc(Br)cc1)N2\u003cbr\u003epIC50: 9.52"}, {"color": "#22a884", "id": 91, "label": "CHEMBL185608", "shape": "dot", "title": "SMILES: CN1C2CCC1C(C(=O)OCCF)C(c1ccc(Br)cc1)C2\u003cbr\u003epIC50: 8.29"}, {"color": "#84d44b", "id": 92, "label": "CHEMBL186119", "shape": "dot", "title": "SMILES: O=C(OCCF)C1C2CCC(CC1c1ccc(Br)cc1)N2\u003cbr\u003epIC50: 9.62"}, {"color": "#90d743", "id": 93, "label": "CHEMBL186306", "shape": "dot", "title": "SMILES: O=C(OCCF)C1C2CCC(CC1c1ccc(I)cc1)N2\u003cbr\u003epIC50: 9.74"}, {"color": "#20928c", "id": 94, "label": "CHEMBL184123", "shape": "dot", "title": "SMILES: O=C(OCCF)C1C(c2ccc(Br)cc2)CC2CCC1N2CCCF\u003cbr\u003epIC50: 7.74"}, {"color": "#25858e", "id": 95, "label": "CHEMBL365413", "shape": "dot", "title": "SMILES: CN1C2CCC1C(C(=O)NCCF)C(c1ccc(Br)cc1)C2\u003cbr\u003epIC50: 7.41"}, {"color": "#23898e", "id": 96, "label": "CHEMBL183259", "shape": "dot", "title": "SMILES: CN1C2CCC1C(C(=O)NCCF)C(c1ccc(I)cc1)C2\u003cbr\u003epIC50: 7.51"}, {"color": "#4cc26c", "id": 97, "label": "CHEMBL365623", "shape": "dot", "title": "SMILES: COC(=O)C1C2CCC(CC1c1ccc(Br)cc1)N2\u003cbr\u003epIC50: 9.02"}, {"color": "#98d83e", "id": 98, "label": "CHEMBL200044", "shape": "dot", "title": "SMILES: COC(=O)C1C2CCC(CC1c1ccc(-c3ccco3)cc1)N2\u003cbr\u003epIC50: 9.82"}, {"color": "#73d056", "id": 99, "label": "CHEMBL200698", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(-c3ccoc3)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 9.46"}, {"color": "#46c06f", "id": 100, "label": "CHEMBL199704", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(-c3ccco3)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 8.95"}, {"color": "#3aba76", "id": 101, "label": "CHEMBL382943", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(-c3nccs3)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 8.78"}, {"color": "#27ad81", "id": 102, "label": "CHEMBL199634", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(-c3cccnc3)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 8.45"}, {"color": "#22a884", "id": 103, "label": "CHEMBL381418", "shape": "dot", "title": "SMILES: COC(=O)C1C2CCC(CC1c1ccc(-c3nccs3)cc1)N2\u003cbr\u003epIC50: 8.29"}, {"color": "#1e9b8a", "id": 104, "label": "CHEMBL383572", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(-c3cnccn3)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 7.95"}, {"color": "#23888e", "id": 105, "label": "CHEMBL372121", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(-c3cncnc3)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 7.48"}, {"color": "#2e6e8e", "id": 106, "label": "CHEMBL199407", "shape": "dot", "title": "SMILES: COC(=O)C1C(c2ccc(-c3ccccn3)cc2)CC2CCC1N2C\u003cbr\u003epIC50: 6.79"}, {"color": "#25ac82", "id": 107, "label": "CHEMBL218082", "shape": "dot", "title": "SMILES: COC(=O)[C@@H]1C2CCC(C[C@@H]1c1ccc(Br)cc1)N2C\u003cbr\u003epIC50: 8.39"}]);
+                  edges = new vis.DataSet([{"from": 0, "to": 3, "value": 0.8043478260869565}, {"from": 0, "to": 5, "value": 0.8043478260869565}, {"from": 0, "to": 42, "value": 0.7111111111111111}, {"from": 1, "to": 2, "value": 0.8163265306122449}, {"from": 2, "to": 3, "value": 0.7058823529411765}, {"from": 3, "to": 5, "value": 0.7872340425531915}, {"from": 3, "to": 56, "value": 0.75}, {"from": 3, "to": 59, "value": 0.7222222222222222}, {"from": 4, "to": 82, "value": 0.7254901960784313}, {"from": 4, "to": 91, "value": 0.72}, {"from": 4, "to": 107, "value": 1.0}, {"from": 5, "to": 62, "value": 0.7959183673469388}, {"from": 5, "to": 63, "value": 0.7959183673469388}, {"from": 6, "to": 23, "value": 0.7906976744186046}, {"from": 6, "to": 84, "value": 0.7446808510638298}, {"from": 6, "to": 85, "value": 0.7446808510638298}, {"from": 6, "to": 86, "value": 0.7777777777777778}, {"from": 6, "to": 87, "value": 0.7777777777777778}, {"from": 6, "to": 88, "value": 0.8095238095238095}, {"from": 6, "to": 97, "value": 0.7906976744186046}, {"from": 7, "to": 40, "value": 0.7450980392156863}, {"from": 7, "to": 68, "value": 0.7254901960784313}, {"from": 8, "to": 9, "value": 0.7307692307692307}, {"from": 8, "to": 10, "value": 0.7755102040816326}, {"from": 8, "to": 15, "value": 0.82}, {"from": 8, "to": 37, "value": 0.7307692307692307}, {"from": 9, "to": 10, "value": 0.7755102040816326}, {"from": 9, "to": 11, "value": 0.82}, {"from": 9, "to": 37, "value": 0.7307692307692307}, {"from": 10, "to": 14, "value": 0.8297872340425532}, {"from": 10, "to": 37, "value": 0.7755102040816326}, {"from": 11, "to": 14, "value": 0.7647058823529411}, {"from": 11, "to": 15, "value": 0.7358490566037735}, {"from": 11, "to": 16, "value": 0.7222222222222222}, {"from": 12, "to": 13, "value": 0.8043478260869565}, {"from": 14, "to": 15, "value": 0.7647058823529411}, {"from": 14, "to": 16, "value": 0.75}, {"from": 15, "to": 16, "value": 0.7222222222222222}, {"from": 16, "to": 37, "value": 0.84}, {"from": 17, "to": 22, "value": 0.7222222222222222}, {"from": 17, "to": 24, "value": 0.8775510204081632}, {"from": 17, "to": 25, "value": 0.7037037037037037}, {"from": 17, "to": 50, "value": 0.82}, {"from": 18, "to": 19, "value": 0.7592592592592593}, {"from": 18, "to": 20, "value": 0.7222222222222222}, {"from": 18, "to": 21, "value": 0.88}, {"from": 18, "to": 89, "value": 0.7090909090909091}, {"from": 18, "to": 91, "value": 0.803921568627451}, {"from": 19, "to": 21, "value": 0.7321428571428571}, {"from": 19, "to": 59, "value": 0.7543859649122807}, {"from": 19, "to": 94, "value": 0.8148148148148148}, {"from": 20, "to": 21, "value": 0.8269230769230769}, {"from": 20, "to": 89, "value": 0.8269230769230769}, {"from": 20, "to": 91, "value": 0.7222222222222222}, {"from": 21, "to": 89, "value": 0.8113207547169812}, {"from": 21, "to": 91, "value": 0.7090909090909091}, {"from": 22, "to": 24, "value": 0.8269230769230769}, {"from": 22, "to": 50, "value": 0.7090909090909091}, {"from": 22, "to": 94, "value": 0.7962962962962963}, {"from": 23, "to": 39, "value": 0.7446808510638298}, {"from": 23, "to": 97, "value": 0.7727272727272727}, {"from": 24, "to": 50, "value": 0.7222222222222222}, {"from": 26, "to": 28, "value": 0.7142857142857143}, {"from": 26, "to": 29, "value": 0.7391304347826086}, {"from": 26, "to": 66, "value": 0.7708333333333334}, {"from": 26, "to": 70, "value": 0.74}, {"from": 26, "to": 73, "value": 0.74}, {"from": 26, "to": 74, "value": 0.723404255319149}, {"from": 27, "to": 30, "value": 0.8043478260869565}, {"from": 27, "to": 31, "value": 0.75}, {"from": 27, "to": 32, "value": 0.7142857142857143}, {"from": 27, "to": 34, "value": 0.7291666666666666}, {"from": 27, "to": 44, "value": 0.7291666666666666}, {"from": 27, "to": 45, "value": 0.7555555555555555}, {"from": 27, "to": 46, "value": 0.7446808510638298}, {"from": 27, "to": 49, "value": 0.7608695652173914}, {"from": 27, "to": 71, "value": 0.7608695652173914}, {"from": 28, "to": 29, "value": 0.7777777777777778}, {"from": 28, "to": 35, "value": 0.7291666666666666}, {"from": 28, "to": 74, "value": 0.723404255319149}, {"from": 29, "to": 33, "value": 0.7391304347826086}, {"from": 29, "to": 35, "value": 0.7555555555555555}, {"from": 29, "to": 66, "value": 0.723404255319149}, {"from": 29, "to": 74, "value": 0.7906976744186046}, {"from": 30, "to": 34, "value": 0.7142857142857143}, {"from": 30, "to": 44, "value": 0.7142857142857143}, {"from": 30, "to": 45, "value": 0.7391304347826086}, {"from": 30, "to": 46, "value": 0.7291666666666666}, {"from": 30, "to": 49, "value": 0.7446808510638298}, {"from": 30, "to": 71, "value": 0.7446808510638298}, {"from": 31, "to": 32, "value": 0.72}, {"from": 31, "to": 45, "value": 0.723404255319149}, {"from": 31, "to": 46, "value": 0.7142857142857143}, {"from": 31, "to": 49, "value": 0.7291666666666666}, {"from": 31, "to": 71, "value": 0.7291666666666666}, {"from": 32, "to": 45, "value": 0.723404255319149}, {"from": 32, "to": 46, "value": 0.7142857142857143}, {"from": 32, "to": 49, "value": 0.7291666666666666}, {"from": 32, "to": 71, "value": 0.7291666666666666}, {"from": 33, "to": 35, "value": 0.8043478260869565}, {"from": 33, "to": 74, "value": 0.723404255319149}, {"from": 34, "to": 44, "value": 0.7142857142857143}, {"from": 34, "to": 45, "value": 0.7391304347826086}, {"from": 34, "to": 46, "value": 0.7291666666666666}, {"from": 34, "to": 49, "value": 0.7446808510638298}, {"from": 34, "to": 71, "value": 0.7446808510638298}, {"from": 35, "to": 74, "value": 0.7391304347826086}, {"from": 38, "to": 40, "value": 0.7592592592592593}, {"from": 38, "to": 100, "value": 0.7962962962962963}, {"from": 39, "to": 65, "value": 0.72}, {"from": 39, "to": 86, "value": 0.7708333333333334}, {"from": 40, "to": 41, "value": 0.7777777777777778}, {"from": 41, "to": 78, "value": 0.7818181818181819}, {"from": 42, "to": 43, "value": 0.7804878048780488}, {"from": 42, "to": 47, "value": 0.775}, {"from": 42, "to": 48, "value": 0.7441860465116279}, {"from": 43, "to": 47, "value": 0.7560975609756098}, {"from": 43, "to": 48, "value": 0.7272727272727273}, {"from": 43, "to": 49, "value": 0.75}, {"from": 44, "to": 45, "value": 0.8604651162790697}, {"from": 44, "to": 46, "value": 0.7291666666666666}, {"from": 44, "to": 49, "value": 0.7446808510638298}, {"from": 44, "to": 71, "value": 0.7446808510638298}, {"from": 45, "to": 46, "value": 0.7555555555555555}, {"from": 45, "to": 47, "value": 0.7380952380952381}, {"from": 45, "to": 49, "value": 0.7727272727272727}, {"from": 45, "to": 68, "value": 0.7446808510638298}, {"from": 45, "to": 71, "value": 0.7727272727272727}, {"from": 46, "to": 49, "value": 0.7608695652173914}, {"from": 46, "to": 71, "value": 0.7608695652173914}, {"from": 47, "to": 48, "value": 0.7209302325581395}, {"from": 49, "to": 71, "value": 0.7777777777777778}, {"from": 50, "to": 51, "value": 0.7884615384615384}, {"from": 50, "to": 52, "value": 0.75}, {"from": 50, "to": 53, "value": 0.7692307692307693}, {"from": 50, "to": 54, "value": 0.7884615384615384}, {"from": 50, "to": 55, "value": 0.7735849056603774}, {"from": 50, "to": 56, "value": 0.7924528301886793}, {"from": 50, "to": 57, "value": 0.7222222222222222}, {"from": 50, "to": 58, "value": 0.75}, {"from": 50, "to": 59, "value": 0.7017543859649122}, {"from": 50, "to": 60, "value": 0.7090909090909091}, {"from": 50, "to": 61, "value": 0.7735849056603774}, {"from": 51, "to": 52, "value": 0.7358490566037735}, {"from": 51, "to": 53, "value": 0.7222222222222222}, {"from": 51, "to": 54, "value": 0.8431372549019608}, {"from": 51, "to": 55, "value": 0.8269230769230769}, {"from": 51, "to": 57, "value": 0.7090909090909091}, {"from": 51, "to": 58, "value": 0.7358490566037735}, {"from": 51, "to": 61, "value": 0.8269230769230769}, {"from": 52, "to": 53, "value": 0.75}, {"from": 52, "to": 54, "value": 0.7692307692307693}, {"from": 52, "to": 55, "value": 0.7222222222222222}, {"from": 52, "to": 57, "value": 0.7358490566037735}, {"from": 52, "to": 58, "value": 0.7647058823529411}, {"from": 52, "to": 60, "value": 0.7547169811320755}, {"from": 52, "to": 61, "value": 0.7222222222222222}, {"from": 53, "to": 54, "value": 0.7222222222222222}, {"from": 53, "to": 55, "value": 0.7090909090909091}, {"from": 53, "to": 57, "value": 0.8235294117647058}, {"from": 53, "to": 58, "value": 0.75}, {"from": 53, "to": 60, "value": 0.7090909090909091}, {"from": 53, "to": 61, "value": 0.7090909090909091}, {"from": 54, "to": 55, "value": 0.8269230769230769}, {"from": 54, "to": 57, "value": 0.7090909090909091}, {"from": 54, "to": 58, "value": 0.7358490566037735}, {"from": 54, "to": 61, "value": 0.8269230769230769}, {"from": 55, "to": 58, "value": 0.7222222222222222}, {"from": 55, "to": 61, "value": 0.8113207547169812}, {"from": 56, "to": 59, "value": 0.8867924528301887}, {"from": 57, "to": 58, "value": 0.7358490566037735}, {"from": 58, "to": 60, "value": 0.7884615384615384}, {"from": 58, "to": 61, "value": 0.7222222222222222}, {"from": 62, "to": 63, "value": 1.0}, {"from": 65, "to": 74, "value": 0.7446808510638298}, {"from": 66, "to": 70, "value": 0.76}, {"from": 66, "to": 73, "value": 0.76}, {"from": 66, "to": 74, "value": 0.7446808510638298}, {"from": 68, "to": 71, "value": 0.75}, {"from": 69, "to": 72, "value": 0.7647058823529411}, {"from": 69, "to": 74, "value": 0.7142857142857143}, {"from": 70, "to": 73, "value": 1.0}, {"from": 70, "to": 74, "value": 0.7142857142857143}, {"from": 72, "to": 74, "value": 0.7142857142857143}, {"from": 73, "to": 74, "value": 0.7142857142857143}, {"from": 75, "to": 78, "value": 0.7017543859649122}, {"from": 76, "to": 77, "value": 0.7818181818181819}, {"from": 76, "to": 80, "value": 0.7017543859649122}, {"from": 76, "to": 82, "value": 0.7962962962962963}, {"from": 76, "to": 83, "value": 0.7818181818181819}, {"from": 77, "to": 80, "value": 0.7017543859649122}, {"from": 77, "to": 82, "value": 0.7962962962962963}, {"from": 77, "to": 83, "value": 0.7818181818181819}, {"from": 78, "to": 101, "value": 0.7017543859649122}, {"from": 79, "to": 103, "value": 0.7142857142857143}, {"from": 80, "to": 82, "value": 0.7142857142857143}, {"from": 80, "to": 83, "value": 0.7017543859649122}, {"from": 80, "to": 101, "value": 0.7192982456140351}, {"from": 82, "to": 83, "value": 0.7962962962962963}, {"from": 82, "to": 107, "value": 0.7254901960784313}, {"from": 84, "to": 85, "value": 0.8333333333333334}, {"from": 84, "to": 86, "value": 0.72}, {"from": 84, "to": 87, "value": 0.8297872340425532}, {"from": 84, "to": 88, "value": 0.7083333333333334}, {"from": 85, "to": 86, "value": 0.72}, {"from": 85, "to": 87, "value": 0.8297872340425532}, {"from": 85, "to": 88, "value": 0.7083333333333334}, {"from": 86, "to": 87, "value": 0.75}, {"from": 86, "to": 88, "value": 0.7777777777777778}, {"from": 87, "to": 88, "value": 0.7391304347826086}, {"from": 89, "to": 91, "value": 0.88}, {"from": 89, "to": 94, "value": 0.7321428571428571}, {"from": 90, "to": 92, "value": 0.875}, {"from": 91, "to": 94, "value": 0.7592592592592593}, {"from": 91, "to": 107, "value": 0.72}, {"from": 92, "to": 93, "value": 0.7959183673469388}, {"from": 95, "to": 96, "value": 0.803921568627451}, {"from": 99, "to": 100, "value": 0.7222222222222222}, {"from": 99, "to": 105, "value": 0.7037037037037037}, {"from": 102, "to": 104, "value": 0.75}, {"from": 102, "to": 105, "value": 0.7924528301886793}, {"from": 104, "to": 105, "value": 0.7272727272727273}, {"from": 104, "to": 106, "value": 0.7818181818181819}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "physics"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
